@@ -1,19 +1,27 @@
 rspamd:
-  url: "http://localhost:11333/"
+  url: "http://localhost:11334/"
   username: "Rspamd controller password"
   password: "thisIsNotAPassword134"
+
 inputs:
   - server: "imap.example.org"
     port: 993
-    username: "johndoe"
+    username: "somebody"
+    password: "thisIsNotAPassword134"
+    useTLS: true
+    directory: "Shared/Spam"
+
+  - server: "imap.gmail.com"
+    port: 993
+    username: "somebody@gmail.com"
+    password: "thisIsNotAPassword134"
+    useTLS: true
+    directory: "[Gmail]/Спам"
+
+  - server: "imap.yandex.ru"
+    port: 993
+    username: "somebody@yandex.ru"
     password: "thisIsNotAPassword134"
     useTLS: true
     directory: "Spam"
-  - server: "imap.example.org"
-    port: 993
-    username: "johndoe"
-    password: "thisIsNotAPassword134"
-    useTLS: true
-    directory: "Shared/Trash"
-
 

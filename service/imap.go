@@ -26,7 +26,7 @@ func (m *MailboxService) Dial(ctx context.Context, cfg config.ImapConfig) (err e
 	if err != nil {
 		return
 	}
-	m.Logger.Printf("Соедиение установлено с %s:%v", cfg.Server, cfg.Port)
+	m.Logger.Printf("Соединение установлено с %s:%v", cfg.Server, cfg.Port)
 	m.client = client
 	err = m.client.Login(cfg.Username, cfg.Password).Wait()
 	if err != nil {
@@ -56,7 +56,7 @@ func (m *MailboxService) Fetch(ctx context.Context, feed chan []byte) (err error
 	if m.messagesFound == 0 {
 		return
 	}
-	seqSet := imap.SeqSetNum(1)
+	seqSet := imap.SeqSetRange(1, m.messagesFound)
 	fetchItems := []imap.FetchItem{
 		imap.FetchItemUID,
 		&imap.FetchItemBodySection{},

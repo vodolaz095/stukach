@@ -4,8 +4,14 @@ deps:
 	go mod tidy
 
 start:
-	go run main.go
+	go run main.go --config config.yaml --dry
 
-port_forward:
-	ssh -L 127.0.0.1:11333:192.168.47.3:11333 holod.local
+check:
+	go run main.go --config config.yaml
 
+learn:
+	go run main.go --config config.yaml --learn
+
+build: deps
+	go build -o build/stukach main.go
+	upx build/stukach

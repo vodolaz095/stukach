@@ -19,6 +19,7 @@ type ImapConfig struct {
 	Password  string `yaml:"password"`
 	UseTLS    bool   `yaml:"useTLS"`
 	Directory string `yaml:"directory"`
+	Limit     uint32 `yaml:"limit"`
 }
 
 type Config struct {
