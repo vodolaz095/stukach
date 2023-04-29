@@ -34,10 +34,9 @@ func main() {
 	if err != nil {
 		log.Fatalf("%s : при загрузке конфигурации из %s", err, pathToConfig)
 	}
-	client := rspamd.New(cfg.Rspamd.URL, rspamd.Credentials(cfg.Rspamd.Username, cfg.Rspamd.Password))
 	srv := service.RspamdReporterService{
 		Logger: logger,
-		Client: client,
+		Client: rspamd.New(cfg.Rspamd.URL, rspamd.Credentials(cfg.Rspamd.Username, cfg.Rspamd.Password)),
 		WG:     &wg,
 		DryRun: dryRun,
 		Learn:  learnSpam,
