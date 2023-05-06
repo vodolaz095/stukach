@@ -22,6 +22,7 @@ type MailboxService struct {
 }
 
 func (m *MailboxService) Dial(ctx context.Context, cfg config.ImapConfig) (err error) {
+	m.cfg = cfg
 	client, err := imapclient.DialTLS(fmt.Sprintf("%s:%v", cfg.Server, cfg.Port), nil)
 	if err != nil {
 		return
@@ -32,13 +33,14 @@ func (m *MailboxService) Dial(ctx context.Context, cfg config.ImapConfig) (err e
 	if err != nil {
 		return
 	}
-	m.Logger.Printf("Авторизация %s прошла успешно ", cfg.Username)
+	m.Logger.Printf("На сервере %s авторизация %s прошла успешно ",
+		cfg.Server, cfg.Username)
 
 	mailboxes, err := m.client.List("", "%", nil).Collect()
 	if err != nil {
 		return
 	}
-	m.Logger.Printf("Найдено %v директорий...", len(mailboxes))
+	m.Logger.Printf("На сервере %s найдено %v директорий...", cfg.Server, len(mailboxes))
 	for i, mbox := range mailboxes {
 		m.Logger.Printf("%v) %s", i, mbox.Mailbox)
 	}
@@ -46,9 +48,8 @@ func (m *MailboxService) Dial(ctx context.Context, cfg config.ImapConfig) (err e
 	if err != nil {
 		return
 	}
-	m.Logger.Printf("Директория %s найдена c %v сообщениями!", cfg.Directory, mailbox.NumMessages)
+	m.Logger.Printf("Директория %s/%s найдена c %v сообщениями!", cfg.Server, cfg.Directory, mailbox.NumMessages)
 	m.messagesFound = mailbox.NumMessages
-	m.cfg = cfg
 	return nil
 }
 
@@ -82,7 +83,7 @@ func (m *MailboxService) Fetch(ctx context.Context, feed chan []byte) (err error
 			case imapclient.FetchItemDataBodySection:
 				b, readErr := io.ReadAll(item.Literal)
 				if readErr != nil {
-					m.Logger.Printf("failed to read body section: %v", err)
+					m.Logger.Printf("%s : при чтении сообщения с %s", err, m.cfg.Server)
 					continue
 				}
 				m.Logger.Printf("Прочитано %v байт из %s сервера %s...",
