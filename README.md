@@ -83,3 +83,7 @@ $ su -c 'make install'
 ```
 
 
+Поддержать проект
+===================
+
+https://www.tinkoff.ru/rm/ostroumov.anatoliy2/4HFzm76801/
