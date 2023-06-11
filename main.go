@@ -36,7 +36,7 @@ func main() {
 	}
 	srv := service.RspamdReporterService{
 		Logger: logger,
-		Client: rspamd.New(cfg.Rspamd.URL, rspamd.Credentials(cfg.Rspamd.Username, cfg.Rspamd.Password)),
+		Client: rspamd.New(cfg.Rspamd.URL),
 		WG:     &wg,
 		DryRun: dryRun,
 		Learn:  learnSpam,
